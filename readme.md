@@ -14,7 +14,7 @@ usage:
                                                 attenuation needs to be between 0 and 95dB
                                                 the resolution is 0.25dB
 
-        -t --csv_table  [path to csv file]      instructs the attenuator to run an attenutation pattern
+        -t --csv_table  [path to csv file]      instructs the attenuator to run an attenuation pattern
                                                 when using this option the script needs to be terminated manually
                                                 see in readme how the csv file needs to be filled
 
