@@ -42,8 +42,8 @@ def csvloop(file):
 			count = 1
 			for  chell in row:
 				if count < 5:
-					antennuation = row[(count)]
-					command = "SET "+str((count))+" "+str(antennuation)
+					attenuation = row[(count)]
+					command = "SET "+str((count))+" "+str(attenuation)
 					serialport.write((command).encode())
 					print(str(serialport.readline()).strip('\'b\\r\\n'))
 					print(str(serialport.readline()).strip('\'b\\r\\n'))
@@ -59,13 +59,13 @@ def help():
 \t-p --port\t[serialport]\t\tpath to serial port the device is in
 \t\t\t\t\t\tthis option is required for every function except help
 
-\t-s --set_value\t[chain:antennuation]\tsets given chain to a given attennuation.
+\t-s --set_value\t[chain:attenuation]\tsets given chain to a given attenuation.
 \t\t\t\t\t\tavailable chains: 1 2 3 4
-\t\t\t\t\t\tantennuation needs to be between 0 and 95dB
+\t\t\t\t\t\tattenuation needs to be between 0 and 95dB
 \t\t\t\t\t\tthe resolution is 0.25dB
 
 \t-t --csv_table\t[path to csv file]
-\t\t\t\t\t\tinstructs the antennuator to run an antennutation pattern
+\t\t\t\t\t\tinstructs the attenuator to run an attenuation pattern
 \t\t\t\t\t\twhen using this option the script needs to be terminated manually
 \t\t\t\t\t\tsee in readme how the csv file needs to be filled
 
@@ -89,11 +89,11 @@ def info():
 	serialport.close()
 	return
 
-def setvalue(anttenuation):
+def setvalue(attenuation):
 
 	global serialport
 
-	par = anttenuation.split(":")
+	par = attenuation.split(":")
 	command = "SET "+str(par[0])+" "+str(par[1])
 	serialport.write((command).encode())
 	sleep(0.01)
