@@ -1,6 +1,7 @@
 requirement to use this script:
 
 Python version 3.7
+
 pySerial module
 
 usage:
