@@ -32,11 +32,6 @@ def csvloop(file):
 		return
 
 
-#pattern_csv:
-#new way: dwell_time,chain1,chain2,chain3,chain4
-#duaration = input("enter time duaration in minutes: ") * 60
-#time_start = time.time()
-#while time.time() < time_start + duaration:
 	while true:
 		for row in pattern_csv_object:
 			count = 1
@@ -61,6 +56,10 @@ def help():
 
 \t-s --set_value\t[chain:attenuation]\tsets given chain to a given attenuation.
 \t\t\t\t\t\tavailable chains: 1 2 3 4
+\t\t\t\t\t\tattenuation needs to be between 0 and 95dB
+\t\t\t\t\t\tthe resolution is 0.25dB
+
+\t-s --set_all\t[attenuation]\tsets all chains to a given attenuation.
 \t\t\t\t\t\tattenuation needs to be between 0 and 95dB
 \t\t\t\t\t\tthe resolution is 0.25dB
 
@@ -102,6 +101,18 @@ def setvalue(attenuation):
 	serialport.close()
 	return
 
+def setall(attenuation):
+	
+	global serialport 
+	
+	command ="SAA "str(attenuation)
+	serialport.write((command).encode())
+	sleep(0.01)
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	serialport.close()
+	return
+	
 def portinfo():
 
 	portlist = serial.tools.list_ports.comports()
@@ -114,9 +125,9 @@ def argumentcheck():
 	argv = sys.argv[1:]
 
 	try:
-		opts, args = getopt.getopt(argv,"dhp:s:t:i",["help","port=","set_value=","csv_table=","info","portinfo"])
+		opts, args = getopt.getopt(argv,"dhp:s:t:a:i",["help","port=","set_value=","set_all=","csv_table=","info","portinfo"])
 	except:
-		print("""incorrect input use -h or --help for a list of options""")
+		print("""incorrect input, use -h or --help for a list of options""")
 		sys.exit(2)
 
 	for opt, arg in opts:
@@ -145,6 +156,14 @@ def argumentcheck():
 				print("no port was given")
 				help()
 			return
+		
+		elif opt in ("-a","--set_all"):
+			if portopt == True:
+				setall(arg)
+			else:
+				print("no port was given")
+				help()
+			return
 
 		elif opt in ("-t","--csv_table"):
 			if portopt == True:
@@ -161,11 +180,3 @@ def argumentcheck():
 argumentcheck()
 
 sys.exit(2)
-
-
-#anstatt Benutztereingaben => argumente bei Skriptaufruf
-#zusätzliche Funktionen, help, einen Wert fest setzten, info aufrufen
-#Zeit als ersten Wert einlesen (erste Spalte in CSV) und  Zeit in Millisekunden parsen
-
-#was tun mit den Errors?
-#Fehleingaben abfangen
