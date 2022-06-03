@@ -28,8 +28,8 @@ def csvloop(file):
 			
 			with open(file) as patterncsv:
 				pattern_csv_object = csv.reader(patterncsv, delimiter=';')
-
-					for row in pattern_csv_object:
+				
+				for row in pattern_csv_object:
 						count = 1
 						for  chell in row:
 							if count < 5:
