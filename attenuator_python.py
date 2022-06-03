@@ -24,21 +24,22 @@ def csvloop(file):
 	global serialport
 
 	try:
-		with open(file) as patterncsv:
-			pattern_csv_object = csv.reader(patterncsv, delimiter=';')
+		while true:
+			
+			with open(file) as patterncsv:
+				pattern_csv_object = csv.reader(patterncsv, delimiter=';')
 
-			while true:
-				for row in pattern_csv_object:
-					count = 1
-					for  chell in row:
-						if count < 5:
-							attenuation = row[(count)]
-							command = "SET "+str((count))+" "+str(attenuation)
-							serialport.write((command).encode())
-							print(str(serialport.readline()).strip('\'b\\r\\n'))
-							print(str(serialport.readline()).strip('\'b\\r\\n'))
-						count += 1
-					sleep(int(row[0])/1000)
+					for row in pattern_csv_object:
+						count = 1
+						for  chell in row:
+							if count < 5:
+								attenuation = row[(count)]
+								command = "SET "+str((count))+" "+str(attenuation)
+								serialport.write((command).encode())
+								print(str(serialport.readline()).strip('\'b\\r\\n'))
+								print(str(serialport.readline()).strip('\'b\\r\\n'))
+							count += 1
+						sleep(int(row[0])/1000)
 
 	except FileNotFoundError:
 		print("Could not find file, use -h or --help")
