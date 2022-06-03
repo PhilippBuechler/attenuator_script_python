@@ -27,23 +27,22 @@ def csvloop(file):
 		with open(file) as patterncsv:
 			pattern_csv_object = csv.reader(patterncsv, delimiter=';')
 
-	except FileNotFound:
+			while true:
+				for row in pattern_csv_object:
+					count = 1
+					for  chell in row:
+						if count < 5:
+							attenuation = row[(count)]
+							command = "SET "+str((count))+" "+str(attenuation)
+							serialport.write((command).encode())
+							print(str(serialport.readline()).strip('\'b\\r\\n'))
+							print(str(serialport.readline()).strip('\'b\\r\\n'))
+						count += 1
+					sleep(int(row[0])/1000)
+
+	except FileNotFoundError:
 		print("Could not find file, use -h or --help")
 		return
-
-
-	while true:
-		for row in pattern_csv_object:
-			count = 1
-			for  chell in row:
-				if count < 5:
-					attenuation = row[(count)]
-					command = "SET "+str((count))+" "+str(attenuation)
-					serialport.write((command).encode())
-					print(str(serialport.readline()).strip('\'b\\r\\n'))
-					print(str(serialport.readline()).strip('\'b\\r\\n'))
-				count += 1
-			sleep(int(row[0]/1000))
 
 def help():
 
@@ -102,9 +101,9 @@ def setvalue(attenuation):
 	return
 
 def setall(attenuation):
-	
-	global serialport 
-	
+
+	global serialport
+
 	command ="SAA "+str(attenuation)
 	serialport.write((command).encode())
 	sleep(0.01)
@@ -112,7 +111,7 @@ def setall(attenuation):
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
 	serialport.close()
 	return
-	
+
 def portinfo():
 
 	portlist = serial.tools.list_ports.comports()
@@ -156,7 +155,7 @@ def argumentcheck():
 				print("no port was given")
 				help()
 			return
-		
+
 		elif opt in ("-a","--set_all"):
 			if portopt == True:
 				setall(arg)
