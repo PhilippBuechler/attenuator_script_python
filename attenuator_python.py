@@ -105,7 +105,7 @@ def setall(attenuation):
 	
 	global serialport 
 	
-	command ="SAA "str(attenuation)
+	command ="SAA "+str(attenuation)
 	serialport.write((command).encode())
 	sleep(0.01)
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
