@@ -117,7 +117,7 @@ def setall(attenuation):
 	serialport.close()
 	return
 
-def multiset(attenuation: str)
+def multiset(attenuation: str):
 
 	global serialport
 
