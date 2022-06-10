@@ -25,10 +25,10 @@ def csvloop(file):
 
 	try:
 		while true:
-			
+
 			with open(file) as patterncsv:
 				pattern_csv_object = csv.reader(patterncsv, delimiter=';')
-				
+
 				for row in pattern_csv_object:
 						count = 1
 						for  chell in row:
@@ -59,7 +59,11 @@ def help():
 \t\t\t\t\t\tattenuation needs to be between 0 and 95dB
 \t\t\t\t\t\tthe resolution is 0.25dB
 
-\t-s --set_all\t[attenuation]\tsets all chains to a given attenuation.
+\t-s --set_all\t[attenuation]\tsets all chains to one given attenuation.
+\t\t\t\t\t\tattenuation needs to be between 0 and 95dB
+\t\t\t\t\t\tthe resolution is 0.25dB
+
+\t-m --multiset\t[attenuation_chain1]:[attenuation_chain2]:[attenuation_chain3]:[attenuation_chain4]\tsets all chains to the given attenuation.
 \t\t\t\t\t\tattenuation needs to be between 0 and 95dB
 \t\t\t\t\t\tthe resolution is 0.25dB
 
@@ -113,6 +117,39 @@ def setall(attenuation):
 	serialport.close()
 	return
 
+def multiset(attenuation: str)
+
+	global serialport
+
+	par = attenuation.split(":")
+	
+	command = "SET 1 "+str(par[1])
+	serialport.write((command).encode())
+	sleep(0.01)
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+
+	command = "SET 2 "+str(par[1])
+	serialport.write((command).encode())
+	sleep(0.01)
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+
+	command = "SET 3 "+str(par[1])
+	serialport.write((command).encode())
+	sleep(0.01)
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+
+	command = "SET 4 "+str(par[1])
+	serialport.write((command).encode())
+	sleep(0.01)
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	print(str(serialport.readline()).strip('\'b\\r\\n'))
+	serialport.close()
+	return
+
+
 def portinfo():
 
 	portlist = serial.tools.list_ports.comports()
@@ -125,7 +162,7 @@ def argumentcheck():
 	argv = sys.argv[1:]
 
 	try:
-		opts, args = getopt.getopt(argv,"dhp:s:t:a:i",["help","port=","set_value=","set_all=","csv_table=","info","portinfo"])
+		opts, args = getopt.getopt(argv,"dhp:s:t:a:m:i",["help","port=","set_value=","set_all=","csv_table=","info","portinfo","multiset"])
 	except:
 		print("""incorrect input, use -h or --help for a list of options""")
 		sys.exit(2)
@@ -152,6 +189,14 @@ def argumentcheck():
 		elif opt in ("-s","--set_value"):
 			if portopt == True:
 				setvalue(arg)
+			else:
+				print("no port was given")
+				help()
+			return
+
+		elif opt in ("-m","--multiset"):
+			if portopt == True:
+				multiset(arg)
 			else:
 				print("no port was given")
 				help()
