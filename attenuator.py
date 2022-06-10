@@ -123,7 +123,7 @@ def multiset(attenuation: str):
 
 	par = attenuation.split(":")
 	
-	command = "SET 1 "+str(par[1])
+	command = "SET 1 "+str(par[0])
 	serialport.write((command).encode())
 	sleep(0.01)
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
@@ -135,13 +135,13 @@ def multiset(attenuation: str):
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
 
-	command = "SET 3 "+str(par[1])
+	command = "SET 3 "+str(par[2])
 	serialport.write((command).encode())
 	sleep(0.01)
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
 
-	command = "SET 4 "+str(par[1])
+	command = "SET 4 "+str(par[3])
 	serialport.write((command).encode())
 	sleep(0.01)
 	print(str(serialport.readline()).strip('\'b\\r\\n'))
