@@ -92,6 +92,18 @@ def info():
 	serialport.close()
 	return
 
+def status():
+
+	global serialport
+
+	serialport.write(("status").encode())
+	output = serialport.readlines()
+	print("")
+	for line in output[1:]:
+		print (str(line).strip('\'b\\r\\n'))
+	serialport.close()
+	return
+
 def setvalue(attenuation):
 
 	global serialport
@@ -162,7 +174,7 @@ def argumentcheck():
 	argv = sys.argv[1:]
 
 	try:
-		opts, args = getopt.getopt(argv,"dhp:s:t:a:m:i",["help","port=","set_value=","set_all=","csv_table=","info","portinfo","multiset"])
+		opts, args = getopt.getopt(argv,"dhp:s:t:a:m:i",["help","port=","set_value=","set_all=","csv_table=","info","portinfo","multiset=","status"])
 	except:
 		print("""incorrect input, use -h or --help for a list of options""")
 		sys.exit(2)
@@ -217,6 +229,10 @@ def argumentcheck():
 				print("no port was given")
 				help()
 			return
+
+		elif opt == "--status":
+			status()
+
 
 		else:
 			print("no options given, try -h or --help")
